@@ -58,22 +58,22 @@ def doAlgStr(s, alg):
     s = doMove(s, moveInd[move])
   return s
 
-def isSolved(state):
-  return np.array_equal(state, [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5])
+def isSolved(s):
+  return np.array_equal(s, [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5])
 
-def printCube(state):
+def printCube(s):
   print("       ┌──┬──┐")
-  print("       │ {}│ {}│".format(state[0], state[1]))
+  print("       │ {}│ {}│".format(s[0], s[1]))
   print("       ├──┼──┤")
-  print("       │ {}│ {}│".format(state[2], state[3]))
+  print("       │ {}│ {}│".format(s[2], s[3]))
   print(" ┌──┬──┼──┼──┼──┬──┬──┬──┐")
-  print(" │ {}│ {}│ {}│ {}│ {}│ {}│ {}│ {}│".format(state[16], state[17], state[8], state[9], state[4], state[5], state[20], state[21]))
+  print(" │ {}│ {}│ {}│ {}│ {}│ {}│ {}│ {}│".format(s[16], s[17], s[8], s[9], s[4], s[5], s[20], s[21]))
   print(" ├──┼──┼──┼──┼──┼──┼──┼──┤")
-  print(" │ {}│ {}│ {}│ {}│ {}│ {}│ {}│ {}│".format(state[18], state[19], state[10], state[11], state[6], state[7], state[22], state[23]))
+  print(" │ {}│ {}│ {}│ {}│ {}│ {}│ {}│ {}│".format(s[18], s[19], s[10], s[11], s[6], s[7], s[22], s[23]))
   print(" └──┴──┼──┼──┼──┴──┴──┴──┘")
-  print("       │ {}│ {}│".format(state[12], state[13]))
+  print("       │ {}│ {}│".format(s[12], s[13]))
   print("       ├──┼──┤")
-  print("       │ {}│ {}│".format(state[14], state[15]))
+  print("       │ {}│ {}│".format(s[14], s[15]))
   print("       └──┴──┘")
 
 if __name__ == '__main__':
