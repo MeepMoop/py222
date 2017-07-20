@@ -69,6 +69,8 @@ moveInds = { \
   "x": 18, "x'": 19, "x2": 20, "y": 21, "y'": 22, "y2": 23, "z": 24, "z'": 25, "z2": 26 \
 }
 
+normCols = np.zeros(6, dtype=np.int)
+
 def getSolved():
   return np.array([0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5])
 
@@ -89,14 +91,13 @@ def isSolved(s):
   return True
 
 def normState(s):
-  ns = np.zeros(24, dtype=np.int)
-  ns[s == s[14]] = 3
-  ns[s == s[18]] = 4
-  ns[s == s[23]] = 5
-  ns[s == (s[14] + 3) % 6] = 0
-  ns[s == (s[18] + 3) % 6] = 1
-  ns[s == (s[23] + 3) % 6] = 2
-  return ns
+  normCols[s[14] - 3] = 0
+  normCols[s[18] - 3] = 1
+  normCols[s[23] - 3] = 2
+  normCols[s[14]] = 3
+  normCols[s[18]] = 4
+  normCols[s[23]] = 5
+  return normCols[s]
 
 def printCube(s):
   print("      ┌──┬──┐")
@@ -113,8 +114,15 @@ def printCube(s):
   print("      │ {}│ {}│".format(s[14], s[15]))
   print("      └──┴──┘")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+  import time
+  print("init state")
   s = getSolved()
   printCube(s)
-  s = doAlgStr(s, "R U' R' U' F2 U' R U R' U F2")
+  print("apply x y R U' R' U' F2 U' R U R' U F2")
+  s = doAlgStr(s, "x y R U' R' U' F2 U' R U R' U F2")
   printCube(s)
+  print("fixed corner norm")
+  s = normState(s)
+  printCube(s)
+
