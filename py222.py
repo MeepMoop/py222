@@ -71,7 +71,7 @@ moveInds = { \
 
 normCols = np.zeros(6, dtype=np.int)
 
-def getSolved():
+def initState():
   return np.array([0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5])
 
 def doMove(s, move):
@@ -115,7 +115,7 @@ def printCube(s):
   print("      └──┴──┘")
 
 if __name__ == "__main__":
-  s = getSolved()
+  s = initState()
   printCube(s)
   s = doAlgStr(s, "x y R U' R' U' F2 U' R U R' U F2")
   printCube(s)
