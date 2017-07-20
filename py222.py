@@ -90,7 +90,7 @@ def isSolved(s):
       return False
   return True
 
-def normState(s):
+def normFC(s):
   normCols[s[14] - 3] = 0
   normCols[s[18] - 3] = 1
   normCols[s[23] - 3] = 2
@@ -119,6 +119,6 @@ if __name__ == "__main__":
   printCube(s)
   s = doAlgStr(s, "x y R U' R' U' F2 U' R U R' U F2")
   printCube(s)
-  s = normState(s)
+  s = normFC(s)
   printCube(s)
 
