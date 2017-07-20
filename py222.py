@@ -77,5 +77,7 @@ def printCube(s):
   print("      └──┴──┘")
 
 if __name__ == '__main__':
-  Y = "R U' R' U' F2 U' R U R' U F2"
-  printCube(doAlgStr(getSolved(), Y))
+  s = getSolved()
+  printCube(s)
+  s = doAlgStr(s, "R U' R' U' F2 U' R U R' U F2")
+  printCube(s)
