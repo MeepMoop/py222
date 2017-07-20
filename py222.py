@@ -115,14 +115,10 @@ def printCube(s):
   print("      └──┴──┘")
 
 if __name__ == "__main__":
-  import time
-  print("init state")
   s = getSolved()
   printCube(s)
-  print("apply x y R U' R' U' F2 U' R U R' U F2")
   s = doAlgStr(s, "x y R U' R' U' F2 U' R U R' U F2")
   printCube(s)
-  print("fixed corner norm")
   s = normState(s)
   printCube(s)
 
