@@ -88,6 +88,16 @@ def isSolved(s):
       return False
   return True
 
+def normState(s):
+  ns = np.zeros(24, dtype=np.int)
+  ns[s == s[14]] = 3
+  ns[s == s[18]] = 4
+  ns[s == s[23]] = 5
+  ns[s == (s[14] + 3) % 6] = 0
+  ns[s == (s[18] + 3) % 6] = 1
+  ns[s == (s[23] + 3) % 6] = 2
+  return ns
+
 def printCube(s):
   print("      ┌──┬──┐")
   print("      │ {}│ {}│".format(s[0], s[1]))
