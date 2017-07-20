@@ -77,8 +77,9 @@ def doMove(s, move):
 
 def doAlgStr(s, alg):
   moves = alg.split(" ")
-  for move in moves:
-    s = doMove(s, moveInds[move])
+  for m in moves:
+    if m in moveInds:
+      s = doMove(s, moveInds[m])
   return s
 
 def isSolved(s):
