@@ -24,7 +24,7 @@ def genPTable(s, d):
     for m in range(9):
       genPTable(py222.doMove(s, m), d + 1)
 
-# IDA* which returns all optimal solutions
+# IDA* which prints all optimal solutions
 def IDAStar(s, d, moves):
   if py222.isSolved(s):
     printMoves(moves)
@@ -75,12 +75,15 @@ def solveCube(s):
     depth += 1
 
 # can generate pruning tables ahead of time
-# genOTable(py222.initState(), 0)
-# genPTable(py222.initState(), 0)
+genOTable(py222.initState(), 0)
+genPTable(py222.initState(), 0)
 
 if __name__ == "__main__":
+  import time
   # input some scrambled state
   s = py222.doAlgStr(py222.initState(), "R U2 R2 F2 R' F2 R F R")
   # solve cube
+  timer = time.time()
   solveCube(s)
+  print(time.time() - timer)
 
