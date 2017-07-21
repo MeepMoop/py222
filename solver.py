@@ -24,7 +24,7 @@ def genPTable(s, d):
     for m in range(9):
       genPTable(py222.doMove(s, m), d + 1)
 
-# IDA* but returns all optimal solutions
+# IDA* which returns all optimal solutions
 def IDAStar(s, d, moves):
   if py222.isSolved(s):
     printMoves(moves)
