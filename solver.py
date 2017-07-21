@@ -79,7 +79,6 @@ def solveCube(s):
 # genPTable(py222.initState(), 0)
 
 if __name__ == "__main__":
-  import time
   # input some scrambled state
   s = py222.doAlgStr(py222.initState(), "R U2 R2 F2 R' F2 R F R")
   # solve cube
