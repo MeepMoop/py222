@@ -78,8 +78,6 @@ moveInds = { \
   "x": 18, "x'": 19, "x2": 20, "y": 21, "y'": 22, "y2": 23, "z": 24, "z'": 25, "z2": 26 \
 }
 
-normCols = np.zeros(6, dtype=np.int)
-
 pieceDefs = np.array([ \
   [  0, 21, 16], \
   [  2, 17,  8], \
@@ -128,7 +126,8 @@ def isSolved(s):
 
 # normalize stickers relative to a fixed DLB corner
 def normFC(s):
-  normCols[s[14] - 3] = 0
+  normCols = np.zeros(6, dtype=np.int)
+  # normCols[s[14] - 3] = 0
   normCols[s[18] - 3] = 1
   normCols[s[23] - 3] = 2
   normCols[s[14]] = 3
@@ -148,9 +147,9 @@ def indexO(sOP):
 def indexP(sOP):
   ps = np.arange(7)
   P = 0
-  for i in sOP[:, 0]:
-    P += fact6[i] * np.where(ps == i)[0][0]
-    ps = ps[ps != i]
+  for i, p in enumerate(sOP[:, 0]):
+    P += fact6[i] * np.where(ps == p)[0][0]
+    ps = ps[ps != p]
   return P
 
 # get a unique index for the state given OP-representation (0-11022479)
