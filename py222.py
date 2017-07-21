@@ -28,6 +28,15 @@ sticker indices:
        │14│15│
        └──┴──┘
 
+pieces:
+[0, 21, 16]
+[2, 17, 8]
+[3, 9, 4]
+[1, 5, 20]
+[12, 10, 19]
+[13, 6, 11]
+[15, 22, 7]
+
 moves:
 [ U , U', U2, R , R', R2, F , F', F2, D , D', D2, L , L', L2, B , B', B2, x , x', x2, y , y', y2, z , z', z2]
 
@@ -71,12 +80,38 @@ moveInds = { \
 
 normCols = np.zeros(6, dtype=np.int)
 
+pieceDefs = np.array([ \
+  [  0, 21, 16], \
+  [  2, 17,  8], \
+  [  3,  9,  4], \
+  [  1,  5, 20], \
+  [ 12, 10, 19], \
+  [ 13,  6, 11], \
+  [ 15, 22,  7], \
+])
+
+pieceInds = np.zeros([58, 2], dtype=np.int)
+pieceInds[50] = [0, 0]; pieceInds[54] = [0, 1]; pieceInds[13] = [0, 2]
+pieceInds[28] = [1, 0]; pieceInds[42] = [1, 1]; pieceInds[ 8] = [1, 2]
+pieceInds[14] = [2, 0]; pieceInds[21] = [2, 1]; pieceInds[ 4] = [2, 2]
+pieceInds[52] = [3, 0]; pieceInds[15] = [3, 1]; pieceInds[11] = [3, 2]
+pieceInds[47] = [4, 0]; pieceInds[30] = [4, 1]; pieceInds[40] = [4, 2]
+pieceInds[25] = [5, 0]; pieceInds[18] = [5, 1]; pieceInds[35] = [5, 2]
+pieceInds[23] = [6, 0]; pieceInds[57] = [6, 1]; pieceInds[37] = [6, 2] 
+
+hashOP = np.array([1, 2, 10])
+pow3 = np.array([1, 3, 9, 27, 81, 243, 729])
+fact6 = np.array([720, 120, 24, 6, 2, 1, 1])
+
+# get FC-normalized solved state
 def initState():
   return np.array([0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5])
 
+# apply a move to a state
 def doMove(s, move):
   return s[moveDefs[move]]
 
+# apply a string sequence of moves to a state
 def doAlgStr(s, alg):
   moves = alg.split(" ")
   for m in moves:
@@ -84,12 +119,14 @@ def doAlgStr(s, alg):
       s = doMove(s, moveInds[m])
   return s
 
+# check if state is solved
 def isSolved(s):
   for i in range(6):
     if not (s[4 * i:4 * i + 4] == s[4 * i]).all():
       return False
   return True
 
+# normalize stickers relative to a fixed DLB corner
 def normFC(s):
   normCols[s[14] - 3] = 0
   normCols[s[18] - 3] = 1
@@ -99,6 +136,28 @@ def normFC(s):
   normCols[s[23]] = 5
   return normCols[s]
 
+# get OP-representation given FC-normalized sticker representation
+def getOP(s):
+  return pieceInds[np.dot(s[pieceDefs], hashOP)]
+
+# get a unique index for the piece orientation state given OP-representation (0-2186)
+def indexO(sOP):
+  return np.dot(sOP[:, 1], pow3)
+
+# get a unique index for the piece permutation state given OP-representation (0-5039)
+def indexP(sOP):
+  ps = np.arange(7)
+  P = 0
+  for i in sOP[:, 0]:
+    P += fact6[i] * np.where(ps == i)[0][0]
+    ps = ps[ps != i]
+  return P
+
+# get a unique index for the state given OP-representation (0-11022479)
+def indexOP(sOP):
+  return hashO(sOP) * 5040 + hashP(sOP)
+
+# print state of the cube
 def printCube(s):
   print("      ┌──┬──┐")
   print("      │ {}│ {}│".format(s[0], s[1]))
@@ -121,4 +180,6 @@ if __name__ == "__main__":
   printCube(s)
   s = normFC(s)
   printCube(s)
+
+ 
 
