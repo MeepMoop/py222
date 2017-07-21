@@ -83,7 +83,5 @@ if __name__ == "__main__":
   # input some scrambled state
   s = py222.doAlgStr(py222.initState(), "R U2 R2 F2 R' F2 R F R")
   # solve cube
-  timer = time.time()
   solveCube(s)
-  print(time.time() - timer)
 
