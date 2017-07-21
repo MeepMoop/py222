@@ -174,10 +174,13 @@ def printCube(s):
   print("      └──┴──┘")
 
 if __name__ == "__main__":
+  # get solved state
   s = initState()
   printCube(s)
+  # do some moves
   s = doAlgStr(s, "x y R U' R' U' F2 U' R U R' U F2")
   printCube(s)
+  # normalize stickers relative to DLB
   s = normFC(s)
   printCube(s)
 
