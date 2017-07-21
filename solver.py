@@ -75,8 +75,8 @@ def solveCube(s):
     depth += 1
 
 # can generate pruning tables ahead of time
-genOTable(py222.initState(), 0)
-genPTable(py222.initState(), 0)
+# genOTable(py222.initState(), 0)
+# genPTable(py222.initState(), 0)
 
 if __name__ == "__main__":
   import time
