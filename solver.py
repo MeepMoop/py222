@@ -64,13 +64,10 @@ def solveCube(s):
   print("normalizing stickers...")
   s = py222.normFC(s)
 
-  import time
-  timer = time.time()
   # generate pruning tables
   print("generating pruning tables...")
   genOTable(py222.initState(), 0)
   genPTable(py222.initState(), 0)
-  print(time.time() - timer)
   
   # run IDA*
   print("searching...")
