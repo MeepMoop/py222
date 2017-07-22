@@ -9,23 +9,27 @@ hP = np.ones(5040, dtype=np.int) * 12
 moveStrs = {0: "U", 1: "U'", 2: "U2", 3: "R", 4: "R'", 5: "R2", 6: "F", 7: "F'", 8: "F2"}
 
 # generate pruning table for the piece orientation states
-def genOTable(s, d):
+def genOTable(s, d, lm=-1):
   index = py222.indexO(py222.getOP(s))
   if d < hO[index]:
     hO[index] = d
     for m in range(9):
-      genOTable(py222.doMove(s, m), d + 1)
+      if int(m / 3) == int(lm / 3):
+        continue
+      genOTable(py222.doMove(s, m), d + 1, m)
 
 # generate pruning table for the piece permutation states
-def genPTable(s, d):
+def genPTable(s, d, lm=-1):
   index = py222.indexP(py222.getOP(s))
   if d < hP[index]:
     hP[index] = d
     for m in range(9):
-      genPTable(py222.doMove(s, m), d + 1)
+      if int(m / 3) == int(lm / 3):
+        continue
+      genPTable(py222.doMove(s, m), d + 1, m)
 
 # IDA* which prints all optimal solutions
-def IDAStar(s, d, moves):
+def IDAStar(s, d, moves, lm=-1):
   if py222.isSolved(s):
     printMoves(moves)
     return True
@@ -34,10 +38,10 @@ def IDAStar(s, d, moves):
     if d > 0 and d >= hO[py222.indexO(sOP)] and d >= hP[py222.indexP(sOP)]:
       dOptimal = False
       for m in range(9):
-        if len(moves) > 0 and int(m / 3) == int(moves[-1] / 3):
+        if int(m / 3) == int(lm / 3):
           continue
         newMoves = moves[:]; newMoves.append(m)
-        solved = IDAStar(py222.doMove(s, m), d - 1, newMoves)
+        solved = IDAStar(py222.doMove(s, m), d - 1, newMoves, m)
         if solved and not dOptimal:
           dOptimal = True
       if dOptimal:
@@ -60,10 +64,13 @@ def solveCube(s):
   print("normalizing stickers...")
   s = py222.normFC(s)
 
+  import time
+  timer = time.time()
   # generate pruning tables
   print("generating pruning tables...")
   genOTable(py222.initState(), 0)
   genPTable(py222.initState(), 0)
+  print(time.time() - timer)
   
   # run IDA*
   print("searching...")
