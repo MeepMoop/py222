@@ -90,6 +90,7 @@ pieceInds[23] = [6, 0]; pieceInds[57] = [6, 1]; pieceInds[37] = [6, 2]
 
 hashOP = np.array([1, 2, 10])
 pow3 = np.array([1, 3, 9, 27, 81, 243, 729])
+pow7 = np.array([1, 7, 49, 343, 2401, 16807, 117649])
 fact6 = np.array([720, 120, 24, 6, 2, 1, 1])
 
 # get FC-normalized solved state
@@ -130,12 +131,16 @@ def normFC(s):
 def getOP(s):
   return pieceInds[np.dot(s[pieceDefs], hashOP)]
 
-# get a unique index for the piece orientation state given OP-representation (0-2186)
+# get a unique index for the piece orientation state (0-2186)
 def indexO(sOP):
   return np.dot(sOP[:, 1], pow3)
 
-# get a unique index for the piece permutation state given OP-representation (0-5039)
+# get a unique index for the piece permutation state (0-823542)
 def indexP(sOP):
+  return np.dot(sOP[:, 0], pow7)
+
+# get a (gap-free) unique index for the piece permutation state (0-5039)
+def indexP2(sOP):
   ps = np.arange(7)
   P = 0
   for i, p in enumerate(sOP[:, 0]):

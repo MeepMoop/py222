@@ -4,7 +4,7 @@ import numpy as np
 import py222
 
 hO = np.ones(2186, dtype=np.int) * 12
-hP = np.ones(5040, dtype=np.int) * 12
+hP = np.ones(823543, dtype=np.int) * 12
 
 moveStrs = {0: "U", 1: "U'", 2: "U2", 3: "R", 4: "R'", 5: "R2", 6: "F", 7: "F'", 8: "F2"}
 
@@ -68,7 +68,7 @@ def solveCube(s):
   print("generating pruning tables...")
   genOTable(py222.initState(), 0)
   genPTable(py222.initState(), 0)
-  
+
   # run IDA*
   print("searching...")
   solved = False
