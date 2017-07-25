@@ -148,9 +148,9 @@ def indexP2(sOP):
     ps = ps[ps != p]
   return P
 
-# get a unique index for the state given OP-representation (0-11022479)
+# get a unique index for the piece orientation and permutation state (0-11017439)
 def indexOP(sOP):
-  return hashO(sOP) * 5040 + hashP(sOP)
+  return indexO(sOP) * 5040 + indexP2(sOP)
 
 # print state of the cube
 def printCube(s):
