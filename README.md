@@ -11,9 +11,11 @@ The move definitions are written for a sticker representation, but there are fun
 # Usage
 
 ```python
+  import py222
+
   # get solved state
-  s = initState()
-  printCube(s)
+  s = py222.initState()
+  py222.printCube(s)
 ```
 ```
       ┌──┬──┐
@@ -32,8 +34,8 @@ The move definitions are written for a sticker representation, but there are fun
 ```
 ```python
   # do some moves
-  s = doAlgStr(s, "x y R U' R' U' F2 U' R U R' U F2")
-  printCube(s)
+  s = py222.doAlgStr(s, "x y R U' R' U' F2 U' R U R' U F2")
+  py222.printCube(s)
 ```
 ```
       ┌──┬──┐
@@ -52,8 +54,8 @@ The move definitions are written for a sticker representation, but there are fun
 ```
 ```python
   # normalize stickers relative to DLB
-  s = normFC(s)
-  printCube(s)
+  s = py222.normFC(s)
+  py222.printCube(s)
 ```
 ```
 
@@ -70,4 +72,48 @@ The move definitions are written for a sticker representation, but there are fun
       ├──┼──┤
       │ 3│ 3│
       └──┴──┘
+```
+
+# Solver Usage
+
+```python
+import py222
+import solver
+
+# get solved state
+s = py222.initState()
+
+# apply some scramble
+s = py222.doAlgStr(s, "R U2 R2 F2 R' F2 R F R")
+
+# solve cube
+solver.solveCube(s)
+```
+```
+      ┌──┬──┐
+      │ 2│ 3│
+      ├──┼──┤
+      │ 1│ 0│
+┌──┬──┼──┼──┼──┬──┬──┬──┐
+│ 1│ 3│ 5│ 4│ 2│ 2│ 4│ 3│
+├──┼──┼──┼──┼──┼──┼──┼──┤
+│ 4│ 2│ 0│ 0│ 4│ 1│ 0│ 5│
+└──┴──┼──┼──┼──┴──┴──┴──┘
+      │ 1│ 5│
+      ├──┼──┤
+      │ 3│ 5│
+      └──┴──┘
+normalizing stickers...
+generating pruning tables...
+searching...
+depth 1
+depth 2
+depth 3
+depth 4
+depth 5
+depth 6
+depth 7
+depth 8
+F R2 F' R U2 R2 F' R 
+F R2 F' R' F R2 U2 R' 
 ```
