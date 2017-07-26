@@ -4,15 +4,6 @@ from __future__ import print_function
 import numpy as np
 
 '''
-face colors:
-    ┌──┐
-    │ 0│
- ┌──┼──┼──┬──┐
- │ 4│ 2│ 1│ 5│
- └──┼──┼──┴──┘
-    │ 3│
-    └──┘
-
 sticker indices:
        ┌──┬──┐
        │ 0│ 1│
@@ -27,6 +18,15 @@ sticker indices:
        ├──┼──┤
        │14│15│
        └──┴──┘
+
+face colors:
+    ┌──┐
+    │ 0│
+ ┌──┼──┼──┬──┐
+ │ 4│ 2│ 1│ 5│
+ └──┼──┼──┴──┘
+    │ 3│
+    └──┘
 
 moves:
 [ U , U', U2, R , R', R2, F , F', F2, D , D', D2, L , L', L2, B , B', B2, x , x', x2, y , y', y2, z , z', z2]
