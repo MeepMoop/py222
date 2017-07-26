@@ -9,7 +9,7 @@ hP = np.ones(823543, dtype=np.int) * 12
 moveStrs = {0: "U", 1: "U'", 2: "U2", 3: "R", 4: "R'", 5: "R2", 6: "F", 7: "F'", 8: "F2"}
 
 # generate pruning table for the piece orientation states
-def genOTable(s, d, lm=-1):
+def genOTable(s, d, lm=-3):
   index = py222.indexO(py222.getOP(s))
   if d < hO[index]:
     hO[index] = d
@@ -19,7 +19,7 @@ def genOTable(s, d, lm=-1):
       genOTable(py222.doMove(s, m), d + 1, m)
 
 # generate pruning table for the piece permutation states
-def genPTable(s, d, lm=-1):
+def genPTable(s, d, lm=-3):
   index = py222.indexP(py222.getOP(s))
   if d < hP[index]:
     hP[index] = d
@@ -29,7 +29,7 @@ def genPTable(s, d, lm=-1):
       genPTable(py222.doMove(s, m), d + 1, m)
 
 # IDA* which prints all optimal solutions
-def IDAStar(s, d, moves, lm=-1):
+def IDAStar(s, d, moves, lm=-3):
   if py222.isSolved(s):
     printMoves(moves)
     return True
