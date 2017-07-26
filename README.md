@@ -2,7 +2,7 @@
 
 Py222 is a 2x2x2 Rubik's Cube representation written in Python. It has support for applying individual moves to the puzzle, as well as space-separated algorithm strings specified in [WCA notation](https://www.worldcubeassociation.org/regulations/#article-12-notation).
 
-The move definitions are written for a sticker representation, but there are functions to normalize the state's stickers relative to a fixed DLB corner, and convert it into a fixed-corner piece orientation and permutation (OP) representation. Given the fixed-corner OP representation of a state, there are various functions which hash the state into unique integer indices.
+The move definitions are written for a sticker representation, but there are functions to normalize the state's stickers relative to a fixed DLB corner, and convert it into a fixed-corner piece orientation and permutation (OP) representation. There are also various functions that can hash the fixed-corner OP representation state into unique integer indices.
 
 Also included is a sample IDA\* solver (solver.py).
 
