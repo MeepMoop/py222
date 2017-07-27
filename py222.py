@@ -86,7 +86,16 @@ pieceInds[14] = [2, 0]; pieceInds[21] = [2, 1]; pieceInds[ 4] = [2, 2]
 pieceInds[52] = [3, 0]; pieceInds[15] = [3, 1]; pieceInds[11] = [3, 2]
 pieceInds[47] = [4, 0]; pieceInds[30] = [4, 1]; pieceInds[40] = [4, 2]
 pieceInds[25] = [5, 0]; pieceInds[18] = [5, 1]; pieceInds[35] = [5, 2]
-pieceInds[23] = [6, 0]; pieceInds[57] = [6, 1]; pieceInds[37] = [6, 2] 
+pieceInds[23] = [6, 0]; pieceInds[57] = [6, 1]; pieceInds[37] = [6, 2]
+
+pieceCols = np.zeros([7, 3, 3], dtype=np.int)
+pieceCols[0, 0, :] = [0, 5, 4]; pieceCols[0, 1, :] = [4, 0, 5]; pieceCols[0, 2, :] = [5, 4, 0]
+pieceCols[1, 0, :] = [0, 4, 2]; pieceCols[1, 1, :] = [2, 0, 4]; pieceCols[1, 2, :] = [4, 2, 0]
+pieceCols[2, 0, :] = [0, 2, 1]; pieceCols[2, 1, :] = [1, 0, 2]; pieceCols[2, 2, :] = [2, 1, 0]
+pieceCols[3, 0, :] = [0, 1, 5]; pieceCols[3, 1, :] = [5, 0, 1]; pieceCols[3, 2, :] = [1, 5, 0]
+pieceCols[4, 0, :] = [3, 2, 4]; pieceCols[4, 1, :] = [4, 3, 2]; pieceCols[4, 2, :] = [2, 4, 3]
+pieceCols[5, 0, :] = [3, 1, 2]; pieceCols[5, 1, :] = [2, 3, 1]; pieceCols[5, 2, :] = [1, 2, 3]
+pieceCols[6, 0, :] = [3, 5, 1]; pieceCols[6, 1, :] = [1, 3, 5]; pieceCols[6, 2, :] = [5, 1, 3]
 
 hashOP = np.array([1, 2, 10])
 pow3 = np.array([1, 3, 9, 27, 81, 243, 729])
@@ -119,7 +128,6 @@ def isSolved(s):
 # normalize stickers relative to a fixed DLB corner
 def normFC(s):
   normCols = np.zeros(6, dtype=np.int)
-  # normCols[s[14] - 3] = 0
   normCols[s[18] - 3] = 1
   normCols[s[23] - 3] = 2
   normCols[s[14]] = 3
@@ -127,9 +135,17 @@ def normFC(s):
   normCols[s[23]] = 5
   return normCols[s]
 
-# get OP-representation given FC-normalized sticker representation
+# get OP representation given FC-normalized sticker representation
 def getOP(s):
   return pieceInds[np.dot(s[pieceDefs], hashOP)]
+
+# get sticker representation from OP representation
+def getStickers(sOP):
+  s = np.zeros(24, dtype=np.int)
+  s[[14, 18, 23]] = [3, 4, 5]
+  for i in range(7):
+    s[pieceDefs[i]] = pieceCols[sOP[i, 0], sOP[i, 1], :]
+  return s
 
 # get a unique index for the piece orientation state (0-2186)
 def indexO(sOP):
