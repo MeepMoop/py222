@@ -1,17 +1,23 @@
 import py222
 import numpy as np
+from nnpy import nn
 
 n_features = 24
+n_hidden = 256
 n_actions = 9
 
 n_eps = 10000
-n_steps = 1000
+n_steps = 100
 
-eps = 0.0
+eps = 1.0
 gamma = 1.0
-alpha = 0.001
+alpha = 0.0001
+rho = 0.7
 
-Q = np.random.randn(n_actions, n_features)
+Q = nn(n_features)
+Q.add_layer('tanh', n_hidden)
+Q.add_layer('tanh', n_hidden)
+Q.add_layer('linear', n_actions)
 
 def initState():
   s = py222.initState()
@@ -26,7 +32,8 @@ def initState():
 
 def chooseAction(s):
   if np.random.random() > eps:
-    Qs = np.dot(Q, s)
+    Q.forward(s)
+    Qs = Q.output()
     return np.argmax(Qs)
   else:
     return np.random.randint(n_actions)
@@ -40,11 +47,21 @@ for ep in range(1, n_eps + 1):
     sp = py222.doMove(s, a)
     ap = chooseAction(sp)
     if py222.isSolved(sp):
-      Q[a] += alpha * (r - np.dot(Q[a], s)) * s
+      Q.forward(s)
+      Qs = Q.output()
+      Qs[a] = r
+      Q.backward_mom(Qs, alpha, rho)
       break
-    Q[a] += alpha * (r + gamma * np.dot(Q[ap], sp) - np.dot(Q[a], s)) * s
+    Q.forward(sp)
+    Qmax = np.max(Q.output())
+    Q.forward(s)
+    Qs = Q.output()
+    #print(Qs)
+    Qs[a] = r + gamma * Qmax
+    Q.backward_mom(Qs, alpha, rho)
     s = sp
     a = ap
   s_avg += (1 / ep) * (step - s_avg)
   print("ep: {}, moves: {}, avg_moves: {}".format(ep, step, s_avg))
-print(Q)
+  eps *= 0.99
+print(np.round(Q, 2))
