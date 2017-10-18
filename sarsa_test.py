@@ -63,5 +63,9 @@ for ep in range(1, n_eps + 1):
     a = ap
   s_avg += (1 / ep) * (step - s_avg)
   print("ep: {}, moves: {}, avg_moves: {}".format(ep, step, s_avg))
+<<<<<<< HEAD:test.py
   eps *= 0.99
 print(np.round(Q, 2))
+=======
+print(Q)
+>>>>>>> a8f116d02b78bc941a9529c3d9298243a5ac9d34:sarsa_test.py
