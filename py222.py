@@ -98,8 +98,8 @@ pieceCols[5, 0, :] = [3, 1, 2]; pieceCols[5, 1, :] = [2, 3, 1]; pieceCols[5, 2, 
 pieceCols[6, 0, :] = [3, 5, 1]; pieceCols[6, 1, :] = [1, 3, 5]; pieceCols[6, 2, :] = [5, 1, 3]
 
 hashOP = np.array([1, 2, 10])
-pow3 = np.array([1, 3, 9, 27, 81, 243, 729])
-pow7 = np.array([1, 7, 49, 343, 2401, 16807, 117649])
+pow3 = np.array([1, 3, 9, 27, 81, 243])
+pow7 = np.array([1, 7, 49, 343, 2401, 16807])
 fact6 = np.array([720, 120, 24, 6, 2, 1, 1])
 
 # get FC-normalized solved state
@@ -147,13 +147,13 @@ def getStickers(sOP):
     s[pieceDefs[i]] = pieceCols[sOP[i, 0], sOP[i, 1], :]
   return s
 
-# get a unique index for the piece orientation state (0-2186)
+# get a unique index for the piece orientation state (0-728)
 def indexO(sOP):
-  return np.dot(sOP[:, 1], pow3)
+  return np.dot(sOP[:-1, 1], pow3)
 
-# get a unique index for the piece permutation state (0-823542)
+# get a unique index for the piece permutation state (0-117648)
 def indexP(sOP):
-  return np.dot(sOP[:, 0], pow7)
+  return np.dot(sOP[:-1, 0], pow7)
 
 # get a (gap-free) unique index for the piece permutation state (0-5039)
 def indexP2(sOP):
@@ -164,7 +164,7 @@ def indexP2(sOP):
     ps = ps[ps != p]
   return P
 
-# get a unique index for the piece orientation and permutation state (0-11017439)
+# get a unique index for the piece orientation and permutation state (0-3674159)
 def indexOP(sOP):
   return indexO(sOP) * 5040 + indexP2(sOP)
 
