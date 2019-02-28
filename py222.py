@@ -33,6 +33,14 @@ moves:
 
 '''
 
+# move indices
+moveInds = { \
+  "U": 0, "U'": 1, "U2": 2, "R": 3, "R'": 4, "R2": 5, "F": 6, "F'": 7, "F2": 8, \
+  "D": 9, "D'": 10, "D2": 11, "L": 12, "L'": 13, "L2": 14, "B": 15, "B'": 16, "B2": 17, \
+  "x": 18, "x'": 19, "x2": 20, "y": 21, "y'": 22, "y2": 23, "z": 24, "z'": 25, "z2": 26 \
+}
+
+# move definitions
 moveDefs = np.array([ \
   [  2,  0,  3,  1, 20, 21,  6,  7,  4,  5, 10, 11, 12, 13, 14, 15,  8,  9, 18, 19, 16, 17, 22, 23], \
   [  1,  3,  0,  2,  8,  9,  6,  7, 16, 17, 10, 11, 12, 13, 14, 15, 20, 21, 18, 19,  4,  5, 22, 23], \
@@ -63,12 +71,7 @@ moveDefs = np.array([ \
   [ 15, 14, 13, 12, 19, 18, 17, 16, 11, 10,  9,  8,  3,  2,  1,  0,  7,  6,  5,  4, 23, 22, 21, 20]  \
 ])
 
-moveInds = { \
-  "U": 0, "U'": 1, "U2": 2, "R": 3, "R'": 4, "R2": 5, "F": 6, "F'": 7, "F2": 8, \
-  "D": 9, "D'": 10, "D2": 11, "L": 12, "L'": 13, "L2": 14, "B": 15, "B'": 16, "B2": 17, \
-  "x": 18, "x'": 19, "x2": 20, "y": 21, "y'": 22, "y2": 23, "z": 24, "z'": 25, "z2": 26 \
-}
-
+# piece definitions
 pieceDefs = np.array([ \
   [  0, 21, 16], \
   [  2, 17,  8], \
@@ -79,6 +82,7 @@ pieceDefs = np.array([ \
   [ 15, 22,  7], \
 ])
 
+# OP representation from (hashed) piece stickers
 pieceInds = np.zeros([58, 2], dtype=np.int)
 pieceInds[50] = [0, 0]; pieceInds[54] = [0, 1]; pieceInds[13] = [0, 2]
 pieceInds[28] = [1, 0]; pieceInds[42] = [1, 1]; pieceInds[ 8] = [1, 2]
@@ -88,6 +92,7 @@ pieceInds[47] = [4, 0]; pieceInds[30] = [4, 1]; pieceInds[40] = [4, 2]
 pieceInds[25] = [5, 0]; pieceInds[18] = [5, 1]; pieceInds[35] = [5, 2]
 pieceInds[23] = [6, 0]; pieceInds[57] = [6, 1]; pieceInds[37] = [6, 2]
 
+# piece stickers from OP representation
 pieceCols = np.zeros([7, 3, 3], dtype=np.int)
 pieceCols[0, 0, :] = [0, 5, 4]; pieceCols[0, 1, :] = [4, 0, 5]; pieceCols[0, 2, :] = [5, 4, 0]
 pieceCols[1, 0, :] = [0, 4, 2]; pieceCols[1, 1, :] = [2, 0, 4]; pieceCols[1, 2, :] = [4, 2, 0]
@@ -97,10 +102,11 @@ pieceCols[4, 0, :] = [3, 2, 4]; pieceCols[4, 1, :] = [4, 3, 2]; pieceCols[4, 2, 
 pieceCols[5, 0, :] = [3, 1, 2]; pieceCols[5, 1, :] = [2, 3, 1]; pieceCols[5, 2, :] = [1, 2, 3]
 pieceCols[6, 0, :] = [3, 5, 1]; pieceCols[6, 1, :] = [1, 3, 5]; pieceCols[6, 2, :] = [5, 1, 3]
 
+# useful arrays for hashing
 hashOP = np.array([1, 2, 10])
 pow3 = np.array([1, 3, 9, 27, 81, 243])
 pow7 = np.array([1, 7, 49, 343, 2401, 16807])
-fact6 = np.array([720, 120, 24, 6, 2, 1, 1])
+fact6 = np.array([720, 120, 24, 6, 2, 1])
 
 # get FC-normalized solved state
 def initState():
@@ -157,12 +163,16 @@ def indexP(sOP):
 
 # get a (gap-free) unique index for the piece permutation state (0-5039)
 def indexP2(sOP):
+  return np.dot([sOP[i, 0] - np.count_nonzero(sOP[:i, 0] < sOP[i, 0]) for i in range(6)], fact6)
+  '''
   ps = np.arange(7)
   P = 0
   for i, p in enumerate(sOP[:, 0]):
     P += fact6[i] * np.where(ps == p)[0][0]
     ps = ps[ps != p]
   return P
+  '''
+  
 
 # get a unique index for the piece orientation and permutation state (0-3674159)
 def indexOP(sOP):
